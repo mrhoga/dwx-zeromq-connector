@@ -73,7 +73,7 @@ class prices_subscriptions(DWX_ZMQ_Strategy):
 
     def __init__(self,
                  _name="PRICES_SUBSCRIPTIONS",
-                 _symbols=['EURUSD', 'GDAXI'],
+                 _symbols=['EURUSD', 'GBPUSD'],
                  _delay=0.1,
                  _broker_gmt=3,
                  _verbose=False):
@@ -97,7 +97,7 @@ class prices_subscriptions(DWX_ZMQ_Strategy):
 
         # Initializes counters of number of prices received from each symbol
         self._eurusd_cnt = 0
-        self._gdaxi_cnt = 0
+        self._gbpusd_cnt = 0
 
         # lock for acquire/release of ZeroMQ connector
         self._lock = Lock()
@@ -127,17 +127,17 @@ class prices_subscriptions(DWX_ZMQ_Strategy):
         # increment counters
         if _topic == 'EURUSD':
             self._eurusd_cnt += 1
-        if _topic == 'GDAXI':
-            self._gdaxi_cnt += 1
+        if _topic == 'GBPUSD':
+            self._gbpusd_cnt += 1
 
         # check if received at least 10 prices from each and then cancel GDAXI feed
-        if self._eurusd_cnt >= 10 and self._gdaxi_cnt >= 10:
+        if self._eurusd_cnt >= 10 and self._gbpusd_cnt >= 10:
             # updates the symbol list and request the update to the Expert Advisor
             self._symbols = ['EURUSD']
             self.__subscribe_to_price_feeds()
             # resets counters
             self._eurusd_cnt = 0
-            self._gdaxi_cnt = 0
+            self._gbpusd_cnt = 0
 
         # check if received 10 more prices from EURUSD with GDAXI disabled
         if self._eurusd_cnt >= 10 and len(self._symbols) == 1:

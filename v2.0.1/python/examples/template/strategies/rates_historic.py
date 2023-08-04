@@ -158,7 +158,7 @@ if __name__ == "__main__":
     example = rates_historic()
 
     # Starts example execution
-    print('unning example...')
+    print('running example...')
     example.run()
 
     # Waits example termination
